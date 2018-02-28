@@ -10,7 +10,7 @@ FPS = 60
 black = (0,0,0)
 white = (255,255,255)
 gravity = 0.8
-imploding = 0.1
+colors = [(134,142,150),(250,82,82),(230,73,128),(190,75,219),(121,80,242),(76,110,245),(34,138,230),(21,170,191),(18,184,134),(64,192,87),(130,201,30),(250,176,5),(253,126,20),(233,236,239),(255,236,153),(163,218,255)]	
 
 class Circle:
 	pos = (-1,-1)
@@ -18,10 +18,12 @@ class Circle:
 	color = (0,0,0)
 	velocity = 0
 	shrinking = 0
-	def __init__(self, pos, radius, color):
+	imploding = 0.1
+	def __init__(self, pos, radius, color, imploding):
 		self.pos = pos
 		self.radius = radius
 		self.color = color
+		self.imploding = imploding
 	
 	def draw(self,screen):
 		(x,y) = self.pos
@@ -29,7 +31,7 @@ class Circle:
 
 	def update(self):
 		self.velocity += gravity
-		self.shrinking += imploding
+		self.shrinking += self.imploding
 		self.radius -= self.shrinking
 		(x,y) = self.pos
 		y += self.velocity
@@ -58,11 +60,10 @@ def main():
 				sys.exit(0)
 			if event.type == pygame.MOUSEBUTTONUP:
 				pos = pygame.mouse.get_pos()
-				radius = random.randrange(200)
-				r = random.randrange(255)
-				g = random.randrange(255)
-				b = random.randrange(255)
-				circles.append(Circle(pos,radius,(r,g,b)))
+				radius = random.randrange(20,100)
+				c = colors[random.randrange(len(colors))]
+				i = float(random.randrange(500))/1000
+				circles.append(Circle(pos,radius,c,i))
 
 		circles = [c for c in circles if c.alive()]
 
